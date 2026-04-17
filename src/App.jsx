@@ -108,7 +108,7 @@ function App() {
         console.error("API Fetch Failed", e);
         // Fallback mockup
         setResultsData([
-           { id: '1', name: 'Cyberpunk Mock Error', source: 'PIM', price: '฿0', specs: { auth: 'No', bluetooth: 'v0', anc: 'None', battery: '0' }, imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800' }
+           { id: '1', name: 'Cyberpunk Mock Error', source: 'PIM', price: '$0', specs: { auth: 'No', bluetooth: 'v0', anc: 'None', battery: '0' }, imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800' }
         ]);
     }
 

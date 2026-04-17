@@ -15,10 +15,10 @@ app.use(express.static(path.join(__dirname, '../dist')));
 
 // Base PIM and Internet Mock Data (Representing our Vector Store)
 const mockProductDatabase = [
-    { id: '1', name: 'Sony WH-1000XM5', source: 'PIM', price: '฿12,990', specs: { auth: 'Official', bluetooth: 'v5.2', anc: 'Industry Leading', battery: '30 hours' }, imageUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=800' },
-    { id: '2', name: 'Logitech MX Master 3S', source: 'PIM', price: '฿3,990', specs: { auth: 'Official', bluetooth: 'v5.1', ergonomics: 'High', battery: '70 days' }, imageUrl: 'https://images.unsplash.com/photo-1527814050087-379381547330?w=800' },
-    { id: '3', name: 'CyberPunk Neon Z-99', source: 'Amazon', price: '฿3,190', specs: { auth: 'Verified', bluetooth: 'v5.3', anc: 'Medium', battery: '25 hours' }, imageUrl: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800' },
-    { id: '4', name: 'Generic Gadget OEM', source: 'Shopee', price: '฿890', specs: { auth: 'OEM Fake', bluetooth: 'v5.0', anc: 'None', battery: '8 hours' }, imageUrl: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800' }
+    { id: '1', name: 'Sony WH-1000XM5', source: 'PIM', price: '$12,990', specs: { auth: 'Official', bluetooth: 'v5.2', anc: 'Industry Leading', battery: '30 hours' }, imageUrl: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=800' },
+    { id: '2', name: 'Logitech MX Master 3S', source: 'PIM', price: '$3,990', specs: { auth: 'Official', bluetooth: 'v5.1', ergonomics: 'High', battery: '70 days' }, imageUrl: 'https://images.unsplash.com/photo-1527814050087-379381547330?w=800' },
+    { id: '3', name: 'CyberPunk Neon Z-99', source: 'Amazon', price: '$3,190', specs: { auth: 'Verified', bluetooth: 'v5.3', anc: 'Medium', battery: '25 hours' }, imageUrl: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800' },
+    { id: '4', name: 'Generic Gadget OEM', source: 'Shopee', price: '$890', specs: { auth: 'OEM Fake', bluetooth: 'v5.0', anc: 'None', battery: '8 hours' }, imageUrl: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=800' }
 ];
 
 app.post('/api/v1/search', async (req, res) => {
