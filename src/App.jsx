@@ -179,7 +179,7 @@ function App() {
                     <div className="frame-marker top-right"></div>
                     <div className="frame-marker bottom-left"></div>
                     <div className="frame-marker bottom-right"></div>
-                    <p className="hint-text">เล็งกล้อง หรืออัปโหลดรูปภาพ</p>
+                    <p className="hint-text">Point camera or Upload image</p>
                 </>
             )}
           </div>
