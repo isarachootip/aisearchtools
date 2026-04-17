@@ -11,6 +11,7 @@ FROM node:20-alpine AS build-backend
 WORKDIR /app/server
 COPY server/package*.json ./
 RUN npm install
+COPY server/ ./
 
 # Stage 3: Monolith Production Server
 FROM node:20-alpine
