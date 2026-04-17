@@ -27,6 +27,7 @@ function App() {
 
   useEffect(() => {
     if ((screen === 'home' || showSourceConfig) && videoRef.current) {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
           .then(stream => {
             if (videoRef.current) {
@@ -34,6 +35,9 @@ function App() {
             }
           })
           .catch(err => console.error("Camera access denied", err));
+      } else {
+        console.warn("Camera API not available (requires HTTPS)");
+      }
     }
   }, [screen, showSourceConfig]);
 
