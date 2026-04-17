@@ -18,9 +18,12 @@ function App() {
   const [resultsData, setResultsData] = useState([]);
   const [compareTray, setCompareTray] = useState([]);
   const [aiAnalysisStr, setAiAnalysisStr] = useState('');
+  
+  const [uploadedImagePreview, setUploadedImagePreview] = useState(null);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if ((screen === 'home' || showSourceConfig) && videoRef.current) {
@@ -60,17 +63,16 @@ function App() {
     setShowSourceConfig(false);
     setScreen('scanning');
     
-    // Attempt to grab frame from video
-    let base64Image = "";
-    if (videoRef.current && canvasRef.current) {
+    let base64Image = uploadedImagePreview;
+
+    // If no uploaded image, try to grab from camera video
+    if (!base64Image && videoRef.current && canvasRef.current) {
         const video = videoRef.current;
         const canvas = canvasRef.current;
         canvas.width = video.videoWidth || 480;
         canvas.height = video.videoHeight || 640;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // Convert to highly compressed JPEG base64 to prevent payload too large
         base64Image = canvas.toDataURL('image/jpeg', 0.5);
     }
     
@@ -113,6 +115,22 @@ function App() {
     setScreen('result_list');
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleClearUpload = () => {
+    setUploadedImagePreview(null);
+    if(fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   const TopNav = ({ title, showBack, rightAction }) => (
     <div className="nav-bar">
       {showBack ? (
@@ -141,23 +159,33 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Hidden Canvas for extracting screenshot */}
+      {/* Hidden Canvas and Input for extracting screenshot */}
       <canvas ref={canvasRef} style={{display: 'none'}}></canvas>
+      <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileUpload} style={{display: 'none'}} />
               
       {screen === 'home' && (
         <div className="camera-view">
           <TopNav title="AI LENS" showBack={false} />
           <div className="viewfinder">
-            <video ref={videoRef} autoPlay playsInline muted className="camera-video"></video>
-            <div className="frame-marker top-left"></div>
-            <div className="frame-marker top-right"></div>
-            <div className="frame-marker bottom-left"></div>
-            <div className="frame-marker bottom-right"></div>
-            <p className="hint-text">เล็งกล้องไปที่สินค้าเพื่อค้นหา</p>
+            {uploadedImagePreview ? (
+                <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <img src={uploadedImagePreview} alt="uploaded" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <button onClick={handleClearUpload} style={{ position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.6)', color: 'white', padding: '10px 15px', borderRadius: '8px', border: '1px solid #fff', zIndex: 10 }}>Clear Photo</button>
+                </div>
+            ) : (
+                <>
+                    <video ref={videoRef} autoPlay playsInline muted className="camera-video"></video>
+                    <div className="frame-marker top-left"></div>
+                    <div className="frame-marker top-right"></div>
+                    <div className="frame-marker bottom-left"></div>
+                    <div className="frame-marker bottom-right"></div>
+                    <p className="hint-text">เล็งกล้อง หรืออัปโหลดรูปภาพ</p>
+                </>
+            )}
           </div>
           <div className="action-bar glass-panel">
-            <button className="upload-btn" onClick={() => setShowSourceConfig(!showSourceConfig)}>
-              <Database color={searchSources.pim ? "#00f3ff" : "#a0a5b5"} size={20}/>
+            <button className="upload-btn" onClick={() => fileInputRef.current.click()}>
+              <Database color="#a0a5b5" size={20}/>
             </button>
             <button className="shutter-btn" onClick={() => setShowSourceConfig(true)}>
               <div className="shutter-inner"><Camera color="#141826" size={32} /></div>
